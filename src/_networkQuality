@@ -1,6 +1,6 @@
-#compdef gas
+#compdef networkQuality
 # ------------------------------------------------------------------------------
-# Copyright (c) 2016 Github zsh-users - https://github.com/zsh-users
+# Copyright (c) 2023 Github zsh-users - https://github.com/zsh-users
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -24,46 +24,30 @@
 # Description
 # -----------
 #
-#  Completion script for gas (https://github.com/walle/gas).
+#  Completion script for networkQuality on macOS
 #
 # ------------------------------------------------------------------------------
 # Authors
 # -------
 #
-#  * Fredrik Wallgren <fredrik.wallgren@gmail.com>
+#  * Shohei Yoshida (https://github.com/syohex) <syohex@gmail.com>
 #
 # ------------------------------------------------------------------------------
 
-local curcontext="$curcontext" state line cmds ret=1
+_arguments \
+  '-C[Use custom configuration URL or path]:url_or_path' \
+  '-I[Bind test to interface]:interface:_net_interfaces' \
+  '-r[Connect to host or IP]:host' \
+  '-c[Produce computer-readable output]' \
+  '-h[Show help]' \
+  '-k[Disable verification of the server identity via TLS]' \
+  '-s[Run tests sequentially instead of parallel upload/download]' \
+  '-v[Verbose output]'
 
-_arguments -C \
-  '(- 1 *)'{-v,--version}'[display version information]' \
-  '(-h|--help)'{-h,--help}'[show help information]' \
-  '1: :->cmds' \
-  '*: :->args' && ret=0
-
-case "$state" in
-  (cmds)
-    cmds=(
-      "version:Prints Gas's version"
-      "use:Uses author"
-      "show:Shows your current user"
-      "list:Lists your authors"
-      "import:Imports current user to gasconfig"
-      "help:Describe available tasks or one specific task"
-      "delete:Deletes author"
-      "add:Adds author to gasconfig"
-    )
-    _describe -t commands 'gas command' cmds && ret=0
-  ;;
-  (args)
-    case "$line[1]" in
-      (use|delete)
-        _values -S , 'authors' $(cat ~/.gas | sed -n -e 's/^\[\(.*\)\]/\1/p') && ret=0
-      ;;
-    esac
-  ;;
-esac
-
-return ret
-
+# Local Variables:
+# mode: Shell-Script
+# sh-indentation: 2
+# indent-tabs-mode: nil
+# sh-basic-offset: 2
+# End:
+# vim: ft=zsh sw=2 ts=2 et

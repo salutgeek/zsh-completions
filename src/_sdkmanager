@@ -1,6 +1,6 @@
-#compdef patool
+#compdef sdkmanager
 # ------------------------------------------------------------------------------
-# Copyright (c) 2017 Github zsh-users - https://github.com/zsh-users
+# Copyright (c) 2023 Github zsh-users - https://github.com/zsh-users
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -24,67 +24,33 @@
 # Description
 # -----------
 #
-#  Completion script for patool (https://github.com/wummel/patool).
+#  Completion script for sdkmanager(https://developer.android.com/studio/command-line/sdkmanager)
 #
 # ------------------------------------------------------------------------------
 # Authors
 # -------
 #
-# * Sergei Eremenko (https://github.com/SmartFinn)
+#  * Shohei Yoshida (https://github.com/syohex) <syohex@gmail.com>
 #
 # ------------------------------------------------------------------------------
 
-local state line ret=1
-
-_arguments -C \
-  '(-h --help)'{-h,--help}'[show help message and exit]' \
-  '(--non-interactive)'--non-interactive'[do not query for user input]' \
-  '(-v --verbose)'{-v,--verbose}'[verbose operation]' \
-  '1:cmd:->cmds' \
-  '*:arg:->args' && ret=0
-
-case $state in
-  (cmds)
-    local -a cmds
-
-    cmds=(
-      'create:create an archive from given files'
-      'diff:show differences between two archives'
-      'extract:extract files from given archives'
-      'formats:show all supported archive formats'
-      'list:list files in archives'
-      'repack:repackage archive to a different format'
-      'recompress:recompress an archive to smaller size'
-      'search:search in archive contents for given pattern'
-      'test:test the given archives'
-    )
-
-    _describe -t commands 'patool commands' cmds && ret=0
-    ;;
-  (args)
-    case $line[1] in
-      (extract)
-        _arguments \
-          '--outdir[extract to the given output directory]:select directory:_files -/' \
-          '*:files:_files' && ret=0
-      ;;
-      (formats)
-        _message 'no more arguments' && ret=0
-      ;;
-      (search)
-        _arguments \
-          '2:search pattern:' \
-          '*:files:_files' && ret=0
-      ;;
-      (*)
-        _arguments \
-          '*:files:_files' && ret=0
-      ;;
-    esac
-    ;;
-esac
-
-return $ret
+_arguments \
+  '(- *)--help[show help message]' \
+  '(- *)--version[print the current version of sdkmanager]' \
+  '--install[install or update package]' \
+  '--uninstall[uninstall the listed packages]' \
+  '--update[all installed packages are updated to the latest version]' \
+  '--list_installed[all installed packages are printed out]' \
+  '--licenses[show and offer the option to accept licenses for all available packages]' \
+  '--sdk_root=[use the specified SDK root instead of the SDK containing this tool]: :_files -/' \
+  '--channel=[include packages in channels up to channel ID]: :((0\:Stable 1\:Beta 2\:Dev 3\:Canary))' \
+  '--include_obsolete[show/update obsolete packages in the package listing]' \
+  '--newer[show only new and/or updatable packages]' \
+  '--no_https[force all connections to use http rather than https]' \
+  '--proxy=[connect via a proxy of the given type]: :(http socks)' \
+  '--proxy_host=[IP or DNS address of the proxy to use]:address' \
+  '--proxy_port=[proxy port to connect to]:port' \
+  '--verbose[enable verbose output]'
 
 # Local Variables:
 # mode: Shell-Script

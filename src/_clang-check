@@ -1,6 +1,6 @@
-#compdef patool
+#compdef clang-check
 # ------------------------------------------------------------------------------
-# Copyright (c) 2017 Github zsh-users - https://github.com/zsh-users
+# Copyright (c) 2022 Github zsh-users - https://github.com/zsh-users
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -24,67 +24,34 @@
 # Description
 # -----------
 #
-#  Completion script for patool (https://github.com/wummel/patool).
+#  Completion script for clang-check v15.0.2 (https://clang.llvm.org/docs/ClangCheck.html)
 #
 # ------------------------------------------------------------------------------
 # Authors
 # -------
 #
-# * Sergei Eremenko (https://github.com/SmartFinn)
+#  * Shohei Yoshida (https://github.com/syohex) <syohex@gmail.com>
 #
 # ------------------------------------------------------------------------------
 
-local state line ret=1
-
-_arguments -C \
-  '(-h --help)'{-h,--help}'[show help message and exit]' \
-  '(--non-interactive)'--non-interactive'[do not query for user input]' \
-  '(-v --verbose)'{-v,--verbose}'[verbose operation]' \
-  '1:cmd:->cmds' \
-  '*:arg:->args' && ret=0
-
-case $state in
-  (cmds)
-    local -a cmds
-
-    cmds=(
-      'create:create an archive from given files'
-      'diff:show differences between two archives'
-      'extract:extract files from given archives'
-      'formats:show all supported archive formats'
-      'list:list files in archives'
-      'repack:repackage archive to a different format'
-      'recompress:recompress an archive to smaller size'
-      'search:search in archive contents for given pattern'
-      'test:test the given archives'
-    )
-
-    _describe -t commands 'patool commands' cmds && ret=0
-    ;;
-  (args)
-    case $line[1] in
-      (extract)
-        _arguments \
-          '--outdir[extract to the given output directory]:select directory:_files -/' \
-          '*:files:_files' && ret=0
-      ;;
-      (formats)
-        _message 'no more arguments' && ret=0
-      ;;
-      (search)
-        _arguments \
-          '2:search pattern:' \
-          '*:files:_files' && ret=0
-      ;;
-      (*)
-        _arguments \
-          '*:files:_files' && ret=0
-      ;;
-    esac
-    ;;
-esac
-
-return $ret
+_arguments \
+  '(- *)--help[Display available options]' \
+  '(- *)--help-hidden[Display available more options]' \
+  '(- *)--version[Display the version of this program]' \
+  '--analyze[Run static analysis engine]' \
+  '--analyzer-output-path=[Write output to file]: :_files' \
+  '--ast-dump[Build ASTs and then debug dump them]' \
+  '--ast-dump-filter=[Use with -ast-dump or -ast-print to dump/print only AST declaration nodes having a certain substring]:string' \
+  '--ast-list[Build ASTs and print the list of declaration node qualified names]' \
+  '--ast-print[Build ASTs and then pretty-print them]' \
+  '*--extra-arg=[Additional argument to append to the compiler command line]:arg' \
+  '*--extra-arg-before=[Additional argument to prepend to the compiler command line]:arg' \
+  '--fix-what-you-can[Apply fix-it advice even in the presence of unfixable errors]' \
+  '--fixit[Apply fix-it advice to the input source]' \
+  '-p[Build directory where compile_commands.json is]: :_files -/' \
+  '--syntax-tree-dump[dump the syntax tree]' \
+  '--tokens-dump[dump the preprocessed tokens]' \
+  '*: :_files'
 
 # Local Variables:
 # mode: Shell-Script
